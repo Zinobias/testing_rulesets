@@ -12,20 +12,16 @@ name: Validate Branch Name
 on:
   pull_request: 
     branches: 
-    - '**'
-
+    - development
 
 jobs:
-  # Job ID for rulesets or status checks: $branch-name-check
   # Job ID for rulesets or status checks: $branch-name-check
   branch-name-check:
     runs-on: ubuntu-latest
     env:
       RegPattern: '^MMKP-[0-9]+$' 
-      RegPattern: '^MMKP-[0-9]+$' 
     steps:
       - name: Check branch name
-        # This step validates that the source branch name matches the required pattern
         # This step validates that the source branch name matches the required pattern
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
