@@ -1,20 +1,36 @@
+# .github/workflows/validateBranchName.yaml
+# ================================================
+# This workflow checks that:
+# - PRs to 'main' must come from 'test'
+# - PRs to 'test' must come from 'dev'
+# It runs on all PRs targeting those branches.
+# ================================================
+
 name: PR Source Branch Check
 
 on:
   pull_request:
     branches:
       - main
+      - test
 
 jobs:
+  # This is the ID we'll use for status checks in our repository rulesets. $enforce-source-branch
   enforce-source-branch:
     runs-on: ubuntu-latest
     steps:
       - name: Ensure PR is from develop branch
+        # This bash check ensures that PRs come from the right source branch
         run: |
           echo " Target branch: ${{ github.base_ref }}"
           echo " Source branch: ${{ github.head_ref }}"
 
-          if [[ "${{ github.head_ref }}" != "test" ]]; then
+          if [[ "${{ github.base_ref }}" == "main" && "${{ github.head_ref }}" != "test" ]]; then
+            echo " PRs to 'main' must come from 'test' branch"
+            exit 1
+          fi
+
+          if [[ "${{ github.base_ref }}" == "test" && "${{ github.head_ref }}" != "development" ]]; then
             echo " PRs to 'main' must come from 'test' branch"
             exit 1
           fi
