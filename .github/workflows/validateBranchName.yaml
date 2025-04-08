@@ -11,7 +11,7 @@ name: Validate Branch Name
 
 on:
   pull_request: 
-    branches-ignore: 
+    branches: 
       - main
       - development
       - test
