@@ -1,0 +1,22 @@
+name: PR Source Branch Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  enforce-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure PR is from develop branch
+        run: |
+          echo " Target branch: ${{ github.base_ref }}"
+          echo " Source branch: ${{ github.head_ref }}"
+
+          if [[ "${{ github.head_ref }}" != "test" ]]; then
+            echo " PRs to 'main' must come from 'test' branch"
+            exit 1
+          fi
+
+          echo "✅ PR source branch is valid"

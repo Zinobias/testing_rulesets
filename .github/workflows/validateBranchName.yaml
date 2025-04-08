@@ -1,0 +1,26 @@
+# .github/workflows/validate-branch-name.yml
+name: Validate Branch Name
+
+on:
+  create:
+    branches:
+      - '**'
+
+jobs:
+  branch-name-check:
+    runs-on: ubuntu-latest
+    env:
+      RegPattern: '^MMKP-[0-9]+$'
+    steps:
+      - name: Check branch name
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          echo " Validating branch: $BRANCH_NAME"
+          echo " Regex: $RegPattern"
+
+          if [[ ! "$BRANCH_NAME" =~ $RegPattern ]]; then
+            echo " Branch name does not match required pattern: $RegPattern"
+            exit 1
+          fi
+
+          echo "✅ Branch name is valid"
