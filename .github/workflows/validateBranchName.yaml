@@ -24,7 +24,8 @@ jobs:
       - name: Check branch name
         # This step validates that the source branch name matches the required pattern
         run: |
-          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          BRANCH_NAME="${{ github.head_ref }}"
+
           echo " Validating branch: $BRANCH_NAME"
           echo " Regex: $RegPattern"
 
